@@ -1,0 +1,15 @@
+.mediaPanel {
+  margin-top: 24px;
+  background: #fffde7;
+  padding: 16px;
+  border-radius: 8px;
+}
+.mediaError {
+  color: red;
+}
+.mediaList {
+  margin-top: 12px;
+}
+.mediaForm {
+  margin-top: 16px;
+}

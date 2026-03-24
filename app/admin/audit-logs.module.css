@@ -1,0 +1,22 @@
+.auditPanel {
+  margin-top: 24px;
+  background: #fff3e0;
+  padding: 16px;
+  border-radius: 8px;
+}
+.auditFilter {
+  margin-bottom: 12px;
+}
+.auditInput {
+  margin-right: 8px;
+}
+.auditClear {
+  margin-left: 8px;
+}
+.auditError {
+  color: red;
+}
+.auditTable {
+  width: 100%;
+  margin-top: 12px;
+}

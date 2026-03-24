@@ -1,0 +1,22 @@
+.profilePanel {
+  max-width: 400px;
+  margin: 2rem auto;
+  background: #fffde7;
+  padding: 24px;
+  border-radius: 8px;
+}
+.profileForm {
+  margin-bottom: 16px;
+}
+.profileInput {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+.profileButton {
+  width: 100%;
+  padding: 8px;
+}
+.profileMessage {
+  margin-top: 12px;
+}

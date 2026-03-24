@@ -1,0 +1,41 @@
+.centeredBox {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+.errorText {
+  color: red;
+}
+.panelSuperAdmin {
+  background: #f0f0f0;
+  padding: 16px;
+  margin-top: 16px;
+}
+.panelProductBrand {
+  background: #e0f7fa;
+  padding: 16px;
+  margin-top: 16px;
+}
+.panelSkillAcquisition {
+  background: #f9fbe7;
+  padding: 16px;
+  margin-top: 16px;
+}
+.panelFinanceContent {
+  background: #fce4ec;
+  padding: 16px;
+  margin-top: 16px;
+}
+.panelExamPrep {
+  background: #e3f2fd;
+  padding: 16px;
+  margin-top: 16px;
+}
+.generalFeaturesBox {
+  margin-top: 24px;
+  background: #fffde7;
+  padding: 12px;
+  border-radius: 8px;
+}
+.signOutBtn {
+  margin-top: 24px;
+}

@@ -1,0 +1,9 @@
+.marketingPanel {
+  margin-top: 24px;
+  background: #fce4ec;
+  padding: 16px;
+  border-radius: 8px;
+}
+.marketingError {
+  color: red;
+}

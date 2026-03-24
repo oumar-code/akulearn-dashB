@@ -1,0 +1,16 @@
+.loginForm {
+  max-width: 400px;
+  margin: 2rem auto;
+}
+.loginInput {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+}
+.loginButton {
+  width: 100%;
+  padding: 8px;
+}
+.loginMessage {
+  margin-top: 12px;
+}

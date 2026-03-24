@@ -1,0 +1,9 @@
+.analyticsPanel {
+  margin-top: 24px;
+  background: #e8f5e9;
+  padding: 16px;
+  border-radius: 8px;
+}
+.analyticsError {
+  color: red;
+}
