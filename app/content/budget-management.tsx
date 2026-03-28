@@ -3,87 +3,40 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
 export default function BudgetManagementPanel() {
-  const [budgets, setBudgets] = useState([]);
+  type BudgetItem = { id: string; description: string; amount?: number; category?: string };
+  const [items, setItems] = useState<BudgetItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [newBudget, setNewBudget] = useState({ item: '', amount: '', status: 'pending' });
 
   useEffect(() => {
-    fetchBudgets();
+    const fetchBudget = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const { data, error } = await supabase.from("budget_items").select("*");
+        if (error) throw error;
+        setItems(data || []);
+      } catch {
+        setError("Unable to fetch budget data.");
+      }
+      setLoading(false);
+    };
+    fetchBudget();
   }, []);
 
-  const fetchBudgets = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const { data, error } = await supabase.from('budgets').select('*');
-      if (error) throw error;
-      setBudgets(data || []);
-    } catch (err) {
-      setError("Unable to fetch budgets. Please check your Supabase table and permissions.");
-    }
-    setLoading(false);
-  };
-
-  const handleAddBudget = async (e) => {
-    e.preventDefault();
-    if (!newBudget.item || !newBudget.amount) return;
-    const { error } = await supabase.from('budgets').insert([newBudget]);
-    if (!error) {
-      setNewBudget({ item: '', amount: '', status: 'pending' });
-      fetchBudgets();
-    }
-  };
-
-  const handleStatusChange = async (id, status) => {
-    await supabase.from('budgets').update({ status }).eq('id', id);
-    fetchBudgets();
-  };
-
   return (
-    <div style={{ marginTop: 24, background: '#fce4ec', padding: 16, borderRadius: 8 }}>
+    <div style={{ padding: "1rem", border: "1px solid #e0e0e0", borderRadius: 8, margin: "1rem 0" }}>
       <h3>Budget Management</h3>
-      <form onSubmit={handleAddBudget} style={{ marginBottom: 16 }}>
-        <input
-          placeholder="Item"
-          value={newBudget.item}
-          onChange={e => setNewBudget(b => ({ ...b, item: e.target.value }))}
-          style={{ marginRight: 8 }}
-        />
-        <input
-          placeholder="Amount"
-          type="number"
-          value={newBudget.amount}
-          onChange={e => setNewBudget(b => ({ ...b, amount: e.target.value }))}
-          style={{ marginRight: 8 }}
-        />
-        <button type="submit">Add</button>
-      </form>
-      {loading && <div>Loading budgets...</div>}
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      <table style={{ width: '100%', marginTop: 12 }}>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {budgets.map(budget => (
-            <tr key={budget.id}>
-              <td>{budget.item}</td>
-              <td>{budget.amount}</td>
-              <td>{budget.status}</td>
-              <td>
-                <button onClick={() => handleStatusChange(budget.id, 'approved')}>Approve</button>
-                <button onClick={() => handleStatusChange(budget.id, 'rejected')}>Reject</button>
-              </td>
-            </tr>
+      {loading && <div>Loading budget...</div>}
+      {error && <div style={{ color: "#d32f2f" }}>{error}</div>}
+      {!loading && !error && (
+        <ul>
+          {items.map(item => (
+            <li key={item.id}>{item.description} — ₦{item.amount?.toLocaleString() ?? 0} ({item.category || "N/A"})</li>
           ))}
-        </tbody>
-      </table>
+          {items.length === 0 && <li>No budget items found.</li>}
+        </ul>
+      )}
     </div>
   );
 }

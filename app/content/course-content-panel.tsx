@@ -1,68 +1,42 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import styles from "./course-content-panel.module.css";
 
-  type Course = { id: string; title: string; description?: string };
-  const [courses, setCourses] = useState<Course[]>([]);
+export default function CourseContentPanel() {
+  type Content = { id: string; title: string; type?: string; course_id?: string };
+  const [content, setContent] = useState<Content[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Fetch courses from Supabase (replace with your actual table/logic)
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchContent = async () => {
       setLoading(true);
       setError("");
       try {
-        // Replace 'courses' with your actual table name
-        const { data, error } = await supabase.from('courses').select('*');
+        const { data, error } = await supabase.from("course_content").select("*");
         if (error) throw error;
-        setCourses(data || []);
+        setContent(data || []);
       } catch {
-        setError("Unable to fetch courses. Please check your Supabase table and permissions.");
+        setError("Unable to fetch course content.");
       }
       setLoading(false);
     };
-    fetchCourses();
+    fetchContent();
   }, []);
 
   return (
-    <div className={styles.coursePanel}>
-      <h3>Course & Content Management</h3>
-      {loading && <div>Loading courses...</div>}
-      {error && <div className={styles.courseError}>{error}</div>}
+    <div style={{ padding: "1rem", border: "1px solid #e0e0e0", borderRadius: 8, margin: "1rem 0" }}>
+      <h3>Course Content Panel</h3>
+      {loading && <div>Loading content...</div>}
+      {error && <div style={{ color: "#d32f2f" }}>{error}</div>}
       {!loading && !error && (
-        <table className={styles.courseTable}>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map(course => (
-              <tr key={course.id}>
-                <td>{course.title}</td>
-                <td>{course.description}</td>
-                <td className={styles.courseActions}>
-                  {/* Add actions: Edit, Delete */}
-                  <button disabled>Edit</button>
-                  <button disabled>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ul>
+          {content.map(c => (
+            <li key={c.id}>{c.title} {c.type ? `[${c.type}]` : ""}</li>
+          ))}
+          {content.length === 0 && <li>No content found.</li>}
+        </ul>
       )}
-      <div className={styles.courseAdd}>
-        <button disabled>Add Course (Coming Soon)</button>
-      </div>
-      <p className={styles.courseNote}>
-        Note: CRUD actions should be implemented with proper Supabase RLS and permissions.
-      </p>
     </div>
   );
 }
-
-export default CourseContentPanel;
